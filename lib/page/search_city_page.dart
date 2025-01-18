@@ -1,6 +1,6 @@
-
 import 'package:weather_app_demo/page/provider/home_provider.dart';
 import 'package:weather_app_demo/utils/config.dart';
+import 'package:weather_app_demo/utils/preferences/preference_manager.dart';
 
 class SearchCityPage extends StatefulWidget {
   const SearchCityPage({super.key});
@@ -21,6 +21,9 @@ class _SearchCityPageState extends State<SearchCityPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.scaffoldBgColor,
+      appBar: AppBar(
+        title: Text("Select City"),
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20),
@@ -60,6 +63,7 @@ class _SearchCityPageState extends State<SearchCityPage> {
                             .read<HomeProvider>()
                             .fetchCityWeatherData(cityModel.name ?? '');
                         Navigator.pop(context);
+                       
                       },
                       title: Text(
                         cityModel.name ?? '',

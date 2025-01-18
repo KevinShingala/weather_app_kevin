@@ -5,6 +5,8 @@ import 'package:intl/intl.dart';
 import 'package:weather_app_demo/models/weather_model.dart';
 import 'package:weather_app_demo/repo/weather_repo.dart';
 import 'package:weather_app_demo/services/client.dart';
+import 'package:weather_app_demo/utils/preferences/pref_keys.dart';
+import 'package:weather_app_demo/utils/preferences/preference_manager.dart';
 
 class HomeProvider extends ChangeNotifier {
   WeatherRepo weatherRepo = WeatherRepo.instance;
@@ -107,16 +109,8 @@ class HomeProvider extends ChangeNotifier {
   }
 
   Future<void> getCurrentLocation() async {
-    bool serviceEnabled;
     LocationPermission permission;
     setLoading();
-    // Test if location services are enabled.
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      // Location services are not enabled, don't continue
-      setLoading();
-      return;
-    }
 
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
@@ -137,11 +131,12 @@ class HomeProvider extends ChangeNotifier {
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
 
-    await _getCityName(position);
+    _getCityName(position);
   }
 
   void setCurrentCity(String city) {
     currentCity = city;
+    AppPrefs().setString(AppPrefKeys.city, currentCity ?? '');
     notifyListeners();
   }
 
@@ -157,9 +152,14 @@ class HomeProvider extends ChangeNotifier {
     Placemark place = placemarks[0];
 
     String city = "${place.locality}, ${place.administrativeArea}";
-    if (city.isNotEmpty) {
-       setLoading();
+    String storedCity = AppPrefs().getString(AppPrefKeys.city);
+    if (storedCity.isEmpty) {
+      setLoading();
       await fetchCityWeatherData(city);
+    } else {
+      currentCity = storedCity;
+      setLoading();
+      await fetchCityWeatherData(storedCity);
     }
 
     notifyListeners();
