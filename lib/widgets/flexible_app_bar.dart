@@ -12,7 +12,7 @@ class MyFlexibleAppBar extends StatelessWidget {
         Column(
           children: [
             Container(
-              height: 430,
+              height: 428,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(25),
