@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:weather_app_demo/page/provider/home_provider.dart';
 import 'package:weather_app_demo/utils/config.dart';
 import 'package:weather_app_demo/utils/preferences/preference_manager.dart';
@@ -16,6 +18,8 @@ class _SearchCityPageState extends State<SearchCityPage> {
     super.initState();
     context.read<HomeProvider>().cityList.clear();
   }
+
+  Timer? _debounce;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +42,10 @@ class _SearchCityPageState extends State<SearchCityPage> {
                   }
                 },
                 onChanged: (value) {
-                  context.read<HomeProvider>().getCity(query: value);
+                  if (_debounce?.isActive ?? false) _debounce?.cancel();
+                  _debounce = Timer(Duration(milliseconds: 500), () {
+                    context.read<HomeProvider>().getCity(query: value);
+                  });
                 },
                 decoration: InputDecoration(
                   hintText: 'Search City...',
@@ -63,7 +70,6 @@ class _SearchCityPageState extends State<SearchCityPage> {
                             .read<HomeProvider>()
                             .fetchCityWeatherData(cityModel.name ?? '');
                         Navigator.pop(context);
-                       
                       },
                       title: Text(
                         cityModel.name ?? '',

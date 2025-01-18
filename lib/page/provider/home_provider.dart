@@ -113,11 +113,20 @@ class HomeProvider extends ChangeNotifier {
     setLoading();
 
     permission = await Geolocator.checkPermission();
+    String storedCity = AppPrefs().getString(AppPrefKeys.city);
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
         // Permissions are denied, don't continue
         setLoading();
+        await fetchCityWeatherData("Surat");
+
+        if (storedCity.isEmpty) {
+          setLoading();
+          await fetchCityWeatherData("Surat");
+        } else {
+          await fetchCityWeatherData(storedCity);
+        }
         return;
       }
     }
@@ -125,6 +134,12 @@ class HomeProvider extends ChangeNotifier {
     if (permission == LocationPermission.deniedForever) {
       // Permissions are denied forever, don't continue
       setLoading();
+      if (storedCity.isEmpty) {
+        setLoading();
+        await fetchCityWeatherData("Surat");
+      } else {
+        await fetchCityWeatherData(storedCity);
+      }
       return;
     }
 
