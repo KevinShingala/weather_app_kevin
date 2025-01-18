@@ -77,9 +77,9 @@ The app uses the [OpenWeather API](https://openweathermap.org/api) to fetch weat
 
 ## Screenshots
 
-https://drive.google.com/file/d/10W9TJUlthMpIBcEzWWFWC32-GjwKTmRS/view?usp=sharing
-https://drive.google.com/file/d/1ucHtjN-wjJzPe-6GFbefBK09_nuUJy_V/view?usp=sharing
-https://drive.google.com/file/d/1h_YvTk7UHhbm37P-nllMcZtAtTB9xtyS/view?usp=sharing
+https://drive.google.com/file/d/10W9TJUlthMpIBcEzWWFWC32-GjwKTmRS/view?usp=sharing .
+https://drive.google.com/file/d/1ucHtjN-wjJzPe-6GFbefBK09_nuUJy_V/view?usp=sharing .
+https://drive.google.com/file/d/1h_YvTk7UHhbm37P-nllMcZtAtTB9xtyS/view?usp=sharing .
 
 ## Technologies Used
 
